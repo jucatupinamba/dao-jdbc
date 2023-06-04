@@ -41,9 +41,9 @@ public class SellerDaoJDBC implements SellerDao {
         ResultSet rs = null;
         try {
             st = conn.prepareStatement(
-                    "SELECT seller.*,department.Name as DepName\n" +
-                            "FROM seller INNER JOIN department\n" +
-                            "ON seller.DepartmentId = department.Id\n" +
+                    "SELECT seller.*,department.Name as DepName " +
+                            "FROM seller INNER JOIN department " +
+                            "ON seller.DepartmentId = department.Id " +
                             "WHERE seller.Id = ?");
 
                     st.setInt(1, id);
@@ -65,15 +65,15 @@ public class SellerDaoJDBC implements SellerDao {
     }
 
     private Seller initiateSeller(ResultSet rs, Department dep) throws SQLException {
-        Seller obj = new Seller();
-        obj.setId(rs.getInt("Id"));
-        obj.setName(rs.getString("Name"));
-        obj.setEmail(rs.getString("Email"));
-        obj.setBaseSalary(rs.getDouble("BaseSalary"));
-        obj.setBirthDate(rs.getDate("BirthDate"));
-        obj.setDepartment(dep);
+        Seller seller = new Seller();
+        seller.setId(rs.getInt("Id"));
+        seller.setName(rs.getString("Name"));
+        seller.setEmail(rs.getString("Email"));
+        seller.setBaseSalary(rs.getDouble("BaseSalary"));
+        seller.setBirthDate(rs.getDate("BirthDate"));
+        seller.setDepartment(dep);
 
-        return obj;
+        return seller;
     }
 
     private Department initiateDeparment(ResultSet rs) throws SQLException {
