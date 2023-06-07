@@ -2,6 +2,7 @@ package model.dao.impl;
 
 import db.DB;
 import db.DbException;
+import model.dao.DaoFactory;
 import model.dao.SellerDao;
 import model.entities.Department;
 import model.entities.Seller;
@@ -15,6 +16,7 @@ import java.util.Map;
 public class SellerDaoJDBC implements SellerDao {
 
     private Connection conn;
+    private DaoFactory daoFactory;
 
     public SellerDaoJDBC(Connection conn){
         this.conn = conn;
@@ -122,8 +124,8 @@ public class SellerDaoJDBC implements SellerDao {
                     st.setInt(1, id);
                     rs = st.executeQuery();
                     if (rs.next()) {
-                        Department dep = initiateDeparment(rs);
-                        Seller obj = initiateSeller(rs, dep);
+                        Department dep = daoFactory.initiateDeparment(rs);
+                        Seller obj = daoFactory.initiateSeller(rs, dep);
                         return obj;
                     }
                     return null;
@@ -137,24 +139,7 @@ public class SellerDaoJDBC implements SellerDao {
     }
     }
 
-    private Seller initiateSeller(ResultSet rs, Department dep) throws SQLException {
-        Seller seller = new Seller();
-        seller.setId(rs.getInt("Id"));
-        seller.setName(rs.getString("Name"));
-        seller.setEmail(rs.getString("Email"));
-        seller.setBaseSalary(rs.getDouble("BaseSalary"));
-        seller.setBirthDate(rs.getDate("BirthDate"));
-        seller.setDepartment(dep);
 
-        return seller;
-    }
-
-    private Department initiateDeparment(ResultSet rs) throws SQLException {
-        Department dep = new Department();
-        dep.setId(rs.getInt("DepartmentId"));
-        dep.setName(rs.getString("DepName"));
-        return dep;
-    }
 
     @Override
     public List<Seller> findAll() {
@@ -177,11 +162,11 @@ public class SellerDaoJDBC implements SellerDao {
                 Department dep = map.get(rs.getInt("DepartmentId"));
 
                 if(dep == null){
-                    dep = initiateDeparment(rs);
-                    map.put(rs.getInt("DepartmentId"), dep);   //salvar apenas a chave uma vez
+                    dep = daoFactory.initiateDeparment(rs);
+                    map.put(rs.getInt("Id"), dep);   //salvar apenas a chave uma vez
                     //evita repetição de instanciar obj department
                 }
-                Seller obj = initiateSeller(rs, dep);
+                Seller obj = daoFactory.initiateSeller(rs, dep);
                 list.add(obj);
             }
             return list;
@@ -218,11 +203,11 @@ public class SellerDaoJDBC implements SellerDao {
                 Department dep = map.get(rs.getInt("DepartmentId"));
 
                 if(dep == null){
-                    dep = initiateDeparment(rs);
+                    dep = daoFactory.initiateDeparment(rs);
                     map.put(rs.getInt("DepartmentId"), dep);   //salvar apenas a chave uma vez
                                                                         //evita repetição de instanciar obj department
                 }
-                Seller obj = initiateSeller(rs, dep);
+                Seller obj = daoFactory.initiateSeller(rs, dep);
                 list.add(obj);
             }
             return list;
