@@ -66,6 +66,20 @@ public class Program {
             System.out.println("New update register is : " + sellerDao.findById(seller.getId()));
         }
 
+        System.out.println("\n==== TEST 6 : seller delete  =====");
+        System.out.println("Digite o Id do funcionário que deseja deletar: ");
+        int id = scan.nextInt();
+        sellerDao.deleteById(id);
+        System.out.println("Deleted completed! ");
+        System.out.println();
+
+        list = sellerDao.findAll();
+        for (Seller obj : list){
+            System.out.println(obj);
+        }
+
+        scan.close();
+
 
     }
 }
