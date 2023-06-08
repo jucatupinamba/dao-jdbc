@@ -65,11 +65,13 @@ public class DepartmentDaoJDBC implements DepartmentDao {
     @Override
     public void update(Department obj) {
         PreparedStatement st = null;
+        Seller seller = new Seller();
 
         try{
-            st = conn.prepareStatement("UPDATE seller\n" +
-                    "SET Name = ?, Id = ?\n" +
-                    "WHERE Id = ?");
+            st = conn.prepareStatement(
+                    "UPDATE department " +
+                            "SET Name = ? " +
+                            "WHERE Id = ?");
 
             st.setString(1, obj.getName());
             st.setInt(2, obj.getId());
@@ -96,15 +98,12 @@ public class DepartmentDaoJDBC implements DepartmentDao {
         ResultSet rs = null;
         try {
             st = conn.prepareStatement(
-                    "SELECT department.Name as DepName " +
-                            "FROM department " +
-                            "ON DepartmentId = department.Id " +
-                            "WHERE department.Id = ?");
+                    "SELECT * FROM department WHERE Id = ?");
 
             st.setInt(1, id);
             rs = st.executeQuery();
             if (rs.next()) {
-                Department dep = daoFactory.initiateDeparment(rs);
+                Department dep = initiateDeparment(rs);
                 return dep;
             }
             return null;

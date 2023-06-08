@@ -41,7 +41,7 @@ public class Program2 {
         int idDepartment = scan.nextInt();
         departmento = departmentDao.findById(idDepartment);
         if (departmento != null) {
-            System.out.println("Digite o nome do departamento a ser modificado \n");
+            System.out.println("Digite o novo nome do Departamento: \n");
             scan.nextLine();
             String novoNome = scan.nextLine();
             departmento.setName(novoNome);
