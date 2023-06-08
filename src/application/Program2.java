@@ -49,5 +49,22 @@ public class Program2 {
             System.out.println("Update Completed!");
             System.out.println("New update register is : " + departmentDao.findById(departmento.getId()));
         }
+
+        System.out.println("\n=== TEST 4: delete =======");
+        System.out.print("Digite o Id para deletar nesse teste: ");
+        int id = scan.nextInt();
+        departmentDao.deleteById(id);
+        System.out.println("Delete completed");
+        scan.nextLine();
+
+        System.out.println("=== TEST 5: findById =======");
+        System.out.println("Digite o Id do departamento a ser buscado: ");
+        int idDep = scan.nextInt();
+        Department dep = departmentDao.findById(idDep);
+        System.out.println(dep);
+
+
+
+        scan.close();
     }
 }
